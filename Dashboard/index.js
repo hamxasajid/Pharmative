@@ -32,7 +32,7 @@ app.post('/add_product', upload.single('image'), (req, res) => {
         id: getNextId([]), // Initialize ID as 1 for now
         name: req.body.name,
         price: parseFloat(req.body.price),
-        image: `/Dashboard/public/uploads/${req.file.filename}` // Use the relative path for the uploaded image
+        image: `/uploads/${req.file.filename}` // Use the relative path for the uploaded image
     };
 
     fs.readFile(path.join(__dirname, 'data.json'), (err, data) => {
@@ -89,7 +89,7 @@ app.put('/update_product/:id', upload.single('image'), (req, res) => {
             ...jsonData.products[productIndex],
             name,
             price: parseFloat(price),
-            image: req.file ? `/Dashboard/public/uploads/${req.file.filename}` : jsonData.products[productIndex].image // Update image only if a new file is uploaded
+            image: req.file ? `/uploads/${req.file.filename}` : jsonData.products[productIndex].image // Update image only if a new file is uploaded
         };
 
         // Replace the old product with the updated one

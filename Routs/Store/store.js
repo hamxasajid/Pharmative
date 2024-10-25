@@ -10,10 +10,10 @@ async function renderProducts() {
         products.forEach(product => {
             const productElement = `
                 <div class="product">
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="../../Dashboard/public${product.image}" alt="${product.name}">
                     <h2>${product.name}</h2>
                     <p>$${product.price.toFixed(2)}</p>
-                    <button onclick="addToCart(${product.id}, '${product.image}', '${product.name}', ${product.price})">Add to Cart</button>
+                    <button onclick="addToCart(${product.id}, '../../Dashboard/public${product.image}', '${product.name}', ${product.price})">Add to Cart</button>
                 </div>`;
             productsContainer.innerHTML += productElement;
         });

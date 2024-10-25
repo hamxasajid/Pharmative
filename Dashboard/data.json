@@ -3,14 +3,20 @@
     {
       "id": 1,
       "name": "Medicine 1",
-      "price": 203,
-      "image": "/Dashboard/public/uploads/1729832698421.jpeg"
+      "price": 122,
+      "image": "/uploads/1729860327687.jpeg"
     },
     {
       "id": 2,
-      "name": "Medicine 1",
-      "price": 202,
-      "image": "/Dashboard/public/uploads/1729835568125.jpeg"
+      "name": "Medicine 2",
+      "price": 199,
+      "image": "/uploads/1729860343961.jpeg"
+    },
+    {
+      "id": 3,
+      "name": "Medicine 3",
+      "price": 265,
+      "image": "/uploads/1729860357668.jpeg"
     }
   ]
 }
