@@ -3,7 +3,7 @@ async function renderProducts() {
     productsContainer.innerHTML = '';
 
     try {
-        const response = await fetch('/Dashboard/data.json');
+        const response = await fetch('../../Dashboard/data.json');
         const data = await response.json(); // Now it retrieves an object
         const products = data.products; // Access the products array
 

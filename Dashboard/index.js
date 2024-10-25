@@ -35,14 +35,14 @@ app.post('/add_product', upload.single('image'), (req, res) => {
         image: `/uploads/${req.file.filename}` // Use the relative path for the uploaded image
     };
 
-    fs.readFile(path.join(__dirname, 'data.json'), (err, data) => {
+    fs.readFile(path.join(__dirname, './data.json'), (err, data) => {
         let jsonData = { products: [] };
         if (!err) {
             jsonData = JSON.parse(data);
         }
         newProduct.id = getNextId(jsonData.products); // Update ID to the next available
         jsonData.products.push(newProduct);
-        fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(jsonData, null, 2), (err) => {
+        fs.writeFile(path.join(__dirname, './data.json'), JSON.stringify(jsonData, null, 2), (err) => {
             if (err) {
                 return res.status(500).json({ message: 'Error writing to data file' });
             }
@@ -53,7 +53,7 @@ app.post('/add_product', upload.single('image'), (req, res) => {
 
 // Endpoint to fetch all products
 app.get('/products', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data.json'), (err, data) => {
+    fs.readFile(path.join(__dirname, './data.json'), (err, data) => {
         if (err) {
             return res.status(500).json({ message: 'Error reading data file' });
         }
@@ -71,7 +71,7 @@ app.put('/update_product/:id', upload.single('image'), (req, res) => {
         return res.status(400).json({ message: 'Invalid product name or price' });
     }
 
-    fs.readFile(path.join(__dirname, 'data.json'), (err, data) => {
+    fs.readFile(path.join(__dirname, './data.json'), (err, data) => {
         if (err) {
             return res.status(500).json({ message: 'Error reading data file' });
         }
@@ -95,7 +95,7 @@ app.put('/update_product/:id', upload.single('image'), (req, res) => {
         // Replace the old product with the updated one
         jsonData.products[productIndex] = updatedProduct;
 
-        fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(jsonData, null, 2), (err) => {
+        fs.writeFile(path.join(__dirname, './data.json'), JSON.stringify(jsonData, null, 2), (err) => {
             if (err) {
                 return res.status(500).json({ message: 'Error writing to data file' });
             }
@@ -107,13 +107,13 @@ app.put('/update_product/:id', upload.single('image'), (req, res) => {
 // Endpoint to delete a product
 app.delete('/delete_product/:id', (req, res) => {
     const productId = parseInt(req.params.id);
-    fs.readFile(path.join(__dirname, 'data.json'), (err, data) => {
+    fs.readFile(path.join(__dirname, './data.json'), (err, data) => {
         if (err) {
             return res.status(500).json({ message: 'Error reading data file' });
         }
         let jsonData = JSON.parse(data);
         jsonData.products = jsonData.products.filter(product => product.id !== productId);
-        fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(jsonData, null, 2), (err) => {
+        fs.writeFile(path.join(__dirname, '../data.json'), JSON.stringify(jsonData, null, 2), (err) => {
             if (err) {
                 return res.status(500).json({ message: 'Error writing to data file' });
             }
@@ -129,7 +129,7 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // Ensure data.json exists
-const dataFilePath = path.join(__dirname, 'data.json');
+const dataFilePath = path.join(__dirname, './data.json');
 if (!fs.existsSync(dataFilePath)) {
     fs.writeFileSync(dataFilePath, JSON.stringify({ products: [] }, null, 2));
 }
