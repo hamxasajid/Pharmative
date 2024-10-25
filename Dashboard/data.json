@@ -1,0 +1,16 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Medicine 1",
+      "price": 203,
+      "image": "/Dashboard/public/uploads/1729832698421.jpeg"
+    },
+    {
+      "id": 2,
+      "name": "Medicine 1",
+      "price": 202,
+      "image": "/Dashboard/public/uploads/1729835568125.jpeg"
+    }
+  ]
+}

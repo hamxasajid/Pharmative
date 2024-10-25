@@ -1,0 +1,287 @@
+        /* General styles */
+        body {
+            font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation bar styles */
+        nav {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #75b239;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            padding: 4px 0px;
+            border-bottom: 1px solid transparent;
+            width: max-content;
+            transition: all 0.5s;
+            font-size: 0.9rem;
+
+        }
+
+        nav a:hover {
+            color: #75b239;
+        }
+
+        nav a.active {
+            border-bottom: 1px solid #75b239;
+            color: #75b239;
+        }
+
+        /* Profile section styles */
+
+        .navbar-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-name {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .admin-h1 {
+            max-width: 600px;
+            text-align: center;
+            background-color: #75b239;
+            padding: 20px 20px;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            margin: 30px auto 0px auto;
+            color: #fff;
+            font-weight: bolder;
+        }
+
+        .table {
+            max-width: 100%;
+        }
+
+        /* Form styles */
+        form {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 50px 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="email"],
+        form input[type="tel"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Hide the default file input */
+        form input[type="file"] {
+            display: none;
+        }
+
+        /* Style the custom file upload button */
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .file-upload-button {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #ffffff;
+            background-color: #75b239;
+            /* Matches the preferred color */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.5s, transform 0.2s;
+        }
+
+        .file-upload-button:hover {
+            background-color: #a4e761;
+            transform: scale(1.05);
+        }
+
+        .file-upload-button:active {
+            transform: scale(0.95);
+        }
+
+        .file-upload-label {
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 8px;
+            color: #555;
+        }
+
+        /* Style for the chosen file name */
+        .file-name {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        form button {
+            background: #75b239;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        form button:hover {
+            background: #a4e761;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+
+        /* Admin info styles */
+        .admin-info-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .admin-info {
+            background-color: #f8f9fa;
+            padding: 20px 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        .infoform{
+            display: none;
+        }
+
+        .editbtn{
+            background: #75b239;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s;  
+        }
+
+        .editbtn:hover {
+            background: #a4e761;
+        }
+
+        .editbtn{
+            background: yellow;
+            color: #333;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s; 
+        }
+
+        .editbtn:hover{
+            background: rgb(235, 235, 0.815);
+        }
+
+        .delbtn{
+            background: red;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s; 
+        }
+
+        .delbtn:hover{
+            background-color: rgba(255, 42, 42, 0.815)
+        }
+        
+
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            nav .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav .nav-links {
+                flex-direction: column;
+            }
+
+            nav a {
+                margin: 5px 0;
+            }
+
+            .admin-info-container {
+                flex-direction: column;
+            }
+
+            .admin-info {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }

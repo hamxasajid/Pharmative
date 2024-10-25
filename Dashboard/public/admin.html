@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./admin.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Admin Dashboard</div>
+            <div class="nav-links">
+                <a href="#" id="addProductLink" class="active">Add Product</a>
+                <a href="#" id="allProductsLink">All Products</a>
+            </div>
+            <div class="navbar-content" id="adminInfoLink">
+                <img id="navProfileImage" src="profile-icon.png" alt="Profile Image"
+                    style="width:50px; height:50px; border-radius:50%; margin-right: 10px;">
+                <span id="navAdminName">John Doe</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Add Product Section -->
+    <div id="addProductSection">
+        <h1 class="admin-h1">Add New Product</h1>
+        <form id="productForm">
+            <input type="hidden" id="productId" value="">
+            <input type="text" id="name" placeholder="Product Name" required>
+            <input type="number" id="price" placeholder="Product Price" required>
+            <div class="file-upload-wrapper">
+                <label for="imageInput" class="file-upload-button">Choose File</label>
+                <input type="file" id="imageInput" name="file-upload" accept="image/*">
+                <span class="file-name" id="product-file-name">No file chosen</span>
+            </div> <br>
+            <img id="imagePreview" src="" alt="Image Preview" style="display:none; max-width: 100px;" />
+            <button type="submit">Add Product</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <div id="allProductsSection" style="display:none;">
+        <h1 class="admin-h1 table">All Products</h1>
+        <table id="productsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+        </table>
+    </div>
+
+    <div id="adminInfoSection" style="display:none;" class="admin-info-container">
+        <div class="admin-info">
+            <h1 class="admin-h1 table">Admin Information</h1>
+            <div class="admin-info">
+                <img id="adminImageDisplay" src="profile-icon.png" alt="Admin Profile"
+                    style="width:100px; height:100px; border-radius:50%;">
+                <p id="adminNameDisplay"><strong>Name:</strong> John Doe</p>
+                <p id="adminEmailDisplay"><strong>Email:</strong> admin@example.com</p>
+                <p id="adminPhoneDisplay"><strong>Phone:</strong> +1234567890</p>
+                <button class="editbtn" type="submit" onclick="showForm()">Edit</button>
+
+
+            </div>
+
+
+            <!-- Update Admin Info Section -->
+            <div id="hiddenForm" class="infoform">
+                <h1 class="admin-h1">Update Admin Info</h1>
+                <form id="adminInfoForm">
+                    <input type="text" id="adminName" placeholder="Name" required>
+                    <input type="email" id="adminEmail" placeholder="Email" required>
+                    <input type="tel" id="adminPhone" placeholder="Phone" required>
+                    <div class="file-upload-wrapper">
+                        <label for="adminImageInput" class="file-upload-button">Choose File</label>
+                        <input type="file" id="adminImageInput" name="file-upload" accept="image/*">
+                        <span class="file-name" id="admin-file-name">No file chosen</span>
+                    </div>
+                    <img id="adminImagePreview" src="profile-icon.png" alt="Profile Image Preview"
+                        style="display:none; width:50px; height:50%; border-radius:50%;"><br>
+                    <button type="submit">Save Changes</button>
+                </form>
+                <div id="adminMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Function to update file name display
+        function updateFileName(inputId, displayId) {
+            const fileInput = document.getElementById(inputId);
+            const displayElement = document.getElementById(displayId);
+
+            fileInput.addEventListener("change", function () {
+                const fileName = this.files[0] ? this.files[0].name : "No file chosen";
+                displayElement.textContent = fileName;
+            });
+        }
+
+        // Apply the function to each file input and its display span
+        updateFileName("imageInput", "product-file-name");
+        updateFileName("adminImageInput", "admin-file-name");
+
+
+        function showForm() {
+            document.getElementById('hiddenForm').style.display = 'block';
+        }
+
+        let updateMode = false; // Track if we are in update mode
+
+        // Preview the uploaded image for product
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add or Update a product
+        document.getElementById('productForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const imageInput = document.getElementById('imageInput');
+            const productId = document.getElementById('productId').value;
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('price', price);
+
+            if (imageInput.files[0]) {
+                formData.append('image', imageInput.files[0]);
+            }
+
+            let url = 'http://localhost:3000/add_product';
+            let method = 'POST';
+
+            if (updateMode && productId) {
+                // If we are in update mode, modify the URL and method
+                url = `http://localhost:3000/update_product/${productId}`;
+                method = 'PUT';
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    body: formData
+                });
+                const result = await response.json();
+                document.getElementById('message').textContent = result.message;
+
+                if (response.ok) {
+                    document.getElementById('productForm').reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+                    updateMode = false; // Reset update mode after submission
+                    document.getElementById('productId').value = ''; // Clear the hidden productId field
+                }
+
+                fetchProducts(); // Refresh product list
+            } catch (error) {
+                console.error('Error adding/updating product:', error);
+                document.getElementById('message').textContent = 'Error adding/updating product';
+            }
+        });
+
+        // Fetch and display all products
+        async function fetchProducts() {
+            try {
+                const response = await fetch('http://localhost:3000/products');
+                const products = await response.json();
+                const productsBody = document.getElementById('productsBody');
+                productsBody.innerHTML = ''; // Clear previous entries
+
+                products.forEach(product => {
+                    const imageName = product.image.split('/').pop();
+                    const imageUrl = `./uploads/${imageName}`;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.id}</td>
+                        <td><img src="${imageUrl}" alt="${product.name}" width="50"></td>
+                        <td>${product.name}</td>
+                        <td>${product.price.toFixed(2)}</td>
+                        <td>
+                            <button class="editbtn" onclick="editProduct(${product.id}, '${product.name}', ${product.price}, '${imageUrl}')">Edit</button>
+                            <button class="delbtn" onclick="deleteProduct(${product.id})">Delete</button>
+                        </td>
+                    `;
+                    productsBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Populate the form with product data for editing
+        function editProduct(id, name, price, imageUrl) {
+            document.getElementById('productId').value = id; // Store the product ID in a hidden input field
+            document.getElementById('name').value = name;
+            document.getElementById('price').value = price;
+            document.getElementById('imagePreview').src = imageUrl;
+            document.getElementById('imagePreview').style.display = 'block';
+
+            updateMode = true; // Set update mode to true
+            document.getElementById('addProductLink').click(); // Switch back to the "Add Product" section
+        }
+
+        // Delete a product
+        async function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                try {
+                    const response = await fetch(`http://localhost:3000/delete_product/${productId}`, {
+                        method: 'DELETE'
+                    });
+                    const result = await response.json();
+                    alert(result.message);
+                    fetchProducts(); // Refresh the product list
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                }
+            }
+        }
+
+        // Function to load admin info from localStorage on page load
+        function loadAdminInfo() {
+            const adminName = localStorage.getItem('adminName') || 'John Doe';
+            const adminEmail = localStorage.getItem('adminEmail') || 'admin@example.com';
+            const adminPhone = localStorage.getItem('adminPhone') || '+1234567890';
+            const adminImage = localStorage.getItem('adminImage') || 'profile-icon.png'; // Default image
+
+            // Update admin information display
+            document.getElementById('adminNameDisplay').innerHTML = `<strong>Name:</strong> ${adminName}`;
+            document.getElementById('adminEmailDisplay').innerHTML = `<strong>Email:</strong> ${adminEmail}`;
+            document.getElementById('adminPhoneDisplay').innerHTML = `<strong>Phone:</strong> ${adminPhone}`;
+            document.getElementById('navAdminName').innerText = adminName;
+            document.getElementById('navProfileImage').src = adminImage;
+
+            // Update the preview image in admin info section
+            document.getElementById('adminImagePreview').src = adminImage;
+            document.getElementById('adminImageDisplay').src = adminImage;
+        }
+
+        // Handle admin info form submission
+        document.getElementById('adminInfoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const adminName = document.getElementById('adminName').value;
+            const adminEmail = document.getElementById('adminEmail').value;
+            const adminPhone = document.getElementById('adminPhone').value;
+            const adminImageInput = document.getElementById('adminImageInput');
+            const adminImage = adminImageInput.files[0] ? URL.createObjectURL(adminImageInput.files[0]) : 'profile-icon.png'; // Fallback image
+
+            // Update localStorage
+            localStorage.setItem('adminName', adminName);
+            localStorage.setItem('adminEmail', adminEmail);
+            localStorage.setItem('adminPhone', adminPhone);
+            localStorage.setItem('adminImage', adminImage); // Store the image URL
+
+            // Refresh navbar and admin info display
+            loadAdminInfo();
+            document.getElementById('adminMessage').textContent = 'Admin information updated successfully.';
+        });
+
+        // Initial load
+        loadAdminInfo();
+        fetchProducts(); // Fetch initial products
+        document.getElementById('addProductLink').addEventListener('click', function () {
+            document.getElementById('addProductSection').style.display = 'block';
+            document.getElementById('allProductsSection').style.display = 'none';
+            document.getElementById('adminInfoSection').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('allProductsLink').classList.remove('active');
+            document.getElementById('adminInfoLink').classList.remove('active');
+        });
+        document.getElementById('allProductsLink').addEventListener('click', function () {
+            document.getElementById('addProductSection').style.display = 'none';
+            document.getElementById('allProductsSection').style.display = 'block';
+            document.getElementById('adminInfoSection').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('addProductLink').classList.remove('active');
+            document.getElementById('adminInfoLink').classList.remove('active');
+        });
+        document.getElementById('adminInfoLink').addEventListener('click', function () {
+            document.getElementById('addProductSection').style.display = 'none';
+            document.getElementById('allProductsSection').style.display = 'none';
+            document.getElementById('adminInfoSection').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('addProductLink').classList.remove('active');
+            document.getElementById('allProductsLink').classList.remove('active');
+        });
+
+        // Load products on initial load
+        fetchProducts();
+
+    </script>
+</body>
+
+</html>
